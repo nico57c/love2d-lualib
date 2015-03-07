@@ -27,7 +27,7 @@ end
 
 
 function Bootstrap:load()
-  self.console=LoveConsole.Console.new({path='/lib/LoveConsole/VeraMono.ttf'})
+  self.console=LoveConsole.Console.new()
 end
 
 function Bootstrap:draw()

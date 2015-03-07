@@ -10,8 +10,7 @@ require "LoveConsole/Bootstrap"
 local consoleBootstrap = LoveConsole.Bootstrap.initConfig()
 
 function consoleBootstrap:load()
-  self.console=LoveConsole.Console.new({path='/lib/LoveConsole/VeraMono.ttf'},
+  self.console=LoveConsole.Console.new({path= self._global['Container']:getParameter('rootdir') .. '/LoveConsole/Tests/VeraMono.ttf'},
                                        nil,
                                        {cmds={config=LoveConsole.CmdConfig,default=LoveConsole.CmdDefault}})
 end
-

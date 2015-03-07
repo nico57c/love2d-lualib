@@ -9,6 +9,7 @@ local Container = {}
 function Container.initialize()
    local obj = { register=Ncr7.tRegister.new() }
    local container = Ncr7.tObject.New._object(Container, obj)
+   container.register:createRegister('Container')
    return container
 end
 
@@ -38,4 +39,12 @@ end
 
 function new()
   return Container.initialize()
+end
+
+function bootstrap(ncr7LualibDir)
+  local love2Dcontainer = {'Love.load','Love.draw','Love.keypressed','Love.textinput'}
+  _G.Container = Ncr7.tContainer.new()
+  _G.Container:init(love2Dcontainer)
+  _G.Container:setParameter('rootdir',ncr7LualibDir)
+  return love2Dcontainer
 end
