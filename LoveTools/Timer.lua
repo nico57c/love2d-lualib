@@ -50,7 +50,7 @@ function Timer:draw()
     self.time=love.timer.getTime()*1000
     return
   end
-
+  
   local cTime = love.timer.getTime()*1000
   local bTime = cTime-self.time
   if bTime >= self.incMs then
