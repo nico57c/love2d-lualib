@@ -21,12 +21,13 @@ function new(style,width,color)
   return Border.initialize();
 end
 
-function Border:setHidden(hidden)
-  if(true == hidden) then
-    self.hidden = true
-  else
+function Border:setVisible(visible)
+  if(true == visible) then
     self.hidden = false
+  else
+    self.hidden = true
   end
+  return self
 end
 
 function Border:setWidth(width)

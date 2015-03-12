@@ -6,19 +6,47 @@ require "Tools/Object"
 
 local HudObject = {}
 
-function HudObject.initialize()
-  local obj = { id=nil, pos=nil, height=nil, width=nil, background={color={love.graphics.getColor()}},
-                font={file=nil,size=nil, fileContent=" abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789.,!?-+/():;%&`'*#=[]\"", type='font'}, 
-                text={value=nil,pos=Ncr7.mtPosition.new(0,0),color=nil}, object=nil }
+function HudObject.initialize(id, parent)
+  local obj = LoveHud.HudObject.getObj(id, parent)
   return Ncr7.tObject.New._object(HudObject, obj)
 end
 
-function new()
-  return HudObject.initialize()
+function new(id, parent)
+  return HudObject.initialize(id, parent)
+end
+
+function getClass()
+  return Ncr7.tObject.deepcopy(HudObject)
+end
+
+function getObj(id, parent)
+  return { id=id or nil, pos=Ncr7.mtPosition.new(0,0), height=nil, width=nil, background={color={love.graphics.getColor()}},
+           font={file=nil,size=nil, fileContent=" abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789.,!?-+/():;%&`'*#=[]\"", type='font'}, 
+           text={value=nil,pos=Ncr7.mtPosition.new(0,0),color={255,0,0}}, object=nil, hidden=false, parent=parent or nil }
+end
+
+function HudObject:clone()
+  local newHudObject = LoveHud.HudObject.new();
+  newHudObject.id=self.id
+  newHudObject.pos=self.pos:clone()
+  newHudObject.height=self.height
+  newHudObject.width=self.width
+  newHudObject.background.color=self.background.color
+  newHudObject.font.file=self.font.file
+  newHudObject.font.size=self.font.size
+  newHudObject.font.fileContent=self.font.fileContent
+  newHudObject.font.type=self.font.type
+  newHudObject.text.value=self.text.value
+  newHudObject.text.pos=self.text.pos:clone()
+  newHudObject.text.color=self.text.color
+  newHudObject.object=self.object
+  newHudObject.hidden=self.hidden
+  newHudObject.parent=self.parent
+  return newHudObject
 end
 
 function HudObject:draw()
-  if(self.drawExtended(self)) then
+  if(self.drawExtended(self) and self:isVisible()) then
     love.graphics.setColor(unpack(self.background.color))
     love.graphics.rectangle('fill', self.pos:getX(), self.pos:getY(), self.width, self.height)
     
@@ -149,19 +177,27 @@ function HudObject:getAttachedObject()
   return self.object
 end
 
-function HudObject:clone()
-  local newHudObject = LoveHud.HudObject.new();
-  newHudObject.id=self.id
-  newHudObject.pos=self.pos:clone()
-  newHudObject.height=self.height
-  newHudObject.width=self.width
-  newHudObject.background.color=self.background.color
-  newHudObject.font.file=self.font.file
-  newHudObject.font.size=self.font.size
-  newHudObject.font.fileContent=self.font.fileContent
-  newHudObject.font.type=self.font.type
-  newHudObject.text.value=self.text.value
-  newHudObject.text.pos=self.text.pos:clone()
-  newHudObject.text.color=self.text.color
-  return newHudObject
+function HudObject:setVisible(visible)
+  if true == visible then
+    self.hidden = false
+  else
+    self.hidden = true
+  end
+end
+
+function HudObject:isVisible()
+  if(true==self.hidden) then
+    return false
+  else
+    return true
+  end
+end
+
+function HudObject:getParent()
+  return hud
+end
+
+function HudObject:setParent(parent)
+  self.parent=parent
+  return self
 end

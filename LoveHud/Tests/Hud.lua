@@ -18,17 +18,17 @@ function consoleBootstrap:load()
   hudObject:setId('life'):setPos(Ncr7.mtPosition.new(20,20)):setFontType('font')
   hudObject:setWidth(70):setHeight(32):setTextPos(Ncr7.mtPosition.new(5,10))
   hudObject:setText('100 / 100'):setTextColor({255,0,0})
-  self.hud:addHudObject(hudObject)
+  self.hud:addObject(hudObject)
   
   hudObject=hudObject:clone()
   hudObject:setId('score'):getPos():addOffsets(100,0,0)
   hudObject:setText('0000001')  
-  self.hud:addHudObject(hudObject)
+  self.hud:addObject(hudObject)
   
   hudObject=hudObject:clone()
   hudObject:setId('time1S.inc'):getPos():addOffsets(100,0,0)
   hudObject:setText('  60')
-  self.hud:addHudObject(hudObject)
+  self.hud:addObject(hudObject)
   
   -- START > Timer 1S.inc test :
   
@@ -53,7 +53,7 @@ function consoleBootstrap:load()
     hudObject=hudObject:clone()
     hudObject:setId('time100MS.inc'):setWidth(85):getPos():addOffsets(100,0,0)
     hudObject:setText(' 6000')
-    self.hud:addHudObject(hudObject)
+    self.hud:addObject(hudObject)
     local timer = LoveTools.Timer.new(0,120000,1,1) -- max 2min in ms
     hudObject:attachObject(timer)
     
@@ -74,7 +74,7 @@ function consoleBootstrap:load()
     hudObject=hudObject:clone()
     hudObject:setId('timeclock'):setWidth(95):getPos():addOffsets(100,0,0)
     hudObject:setText('00:00.00 000')
-    self.hud:addHudObject(hudObject)
+    self.hud:addObject(hudObject)
     local timeclock = LoveTools.TimeClock.new(true)
     hudObject:attachObject(timeclock)
     

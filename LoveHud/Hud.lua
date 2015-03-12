@@ -9,23 +9,35 @@ require "LoveHud/HudObject"
 
 local Hud = {}
 
-function Hud.initialize(pos)
-  local obj = { pos= pos or nil, height= nil, width= nil, 
-                polygon={obj=Ncr7.mtPolygon.new(pos or nil), border= LovePainter.Border.new()},
-                background={color={love.graphics.getColor()}, img=nil, align={'center','center'}, position=nil, _aPos=nil}, id=nil,
-                torender={polygon=true,background=true}, hudObjs={}
-              }
+function Hud.initialize(pos,id)
+  local obj = LoveHud.Hud.getObj(pos, id)  -- Extends Hud attributes
   return Ncr7.tObject.New._object(Hud, obj)
 end
 
-function new(x,y,width,height)
-  local hud = Hud.initialize(Ncr7.mtPosition.new(x or 0, y or 0))
+function new(x,y,width,height,id)
+  local hud = Hud.initialize(Ncr7.mtPosition.new(x or 0, y or 0), id)
   hud:setWidth(width):setHeight(height)
   hud:update()
   return hud
 end
 
+function getClass()
+  return Ncr7.tObject.deepcopy(Hud)
+end
+
+function getObj(pos,id)
+  return { pos=pos or nil, height= nil, width= nil, 
+           polygon={obj=Ncr7.mtPolygon.new(pos or nil), border= LovePainter.Border.new()},
+           background={color={love.graphics.getColor()}, img=nil, align={'center','center'}, position=nil, _aPos=nil}, id=id or nil,
+           torender={polygon=true,background=true}, objects={}, hidden=false
+         }
+end
+
 function Hud:draw()
+  if self.hidden then
+    return
+  end
+  
   if(self.torender.polygon) then
     love.graphics.setColor(unpack(self.polygon.border.color))
     self.polygon.border:draw(self.polygon.obj:getPoints().absolutes)    
@@ -33,6 +45,7 @@ function Hud:draw()
   
   if(self.torender.background) then
     if(nil==self.background.position and nil~=self.background.align) then
+      
     end
     if(nil~=self.background.color) then
       
@@ -42,22 +55,22 @@ function Hud:draw()
     end
   end
   
-  for key,hudObj in pairs(self.hudObjs) do
+  for key,hudObj in pairs(self.objects) do
     hudObj:draw()
   end 
 end
 
-function Hud:addHudObject(object)
-  self.hudObjs[#self.hudObjs+1] = object
+function Hud:addObject(object)
+  self.objects[#self.objects+1] = object
   return self
 end
 
-function Hud:getHudObject(index)
-  return self.hudObjs[index]
+function Hud:getObject(index)
+  return self.objects[index]
 end
 
-function Hud:getHudObjects()
-  return self.hudObjs
+function Hud:getObjects()
+  return self.objects
 end
 
 function Hud:getId()
@@ -154,5 +167,21 @@ end
 function Hud:moveOnY(offset)
   self.pos:addOffset(offset or 1,'y')
   return self
+end
+
+function Hud:setVisible(visible)
+  if true == visible then
+    self.hidden = false
+  else
+    self.hidden = true
+  end
+end
+
+function Hud:isVisible()
+  if(self.hidden) then
+    return false
+  else
+    return true
+  end
 end
 

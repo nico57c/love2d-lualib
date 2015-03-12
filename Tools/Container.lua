@@ -42,7 +42,8 @@ function new()
 end
 
 function bootstrap(ncr7LualibDir)
-  local love2Dcontainer = {'Love.load','Love.draw','Love.keypressed','Love.textinput'}
+  local love2Dcontainer = {'Love.load','Love.draw','Love.keypressed','Love.textinput',
+                           'Love.mousepressed','Love.mousereleased','Love.mousemoved'}
   _G.Container = Ncr7.tContainer.new()
   _G.Container:init(love2Dcontainer)
   _G.Container:setParameter('rootdir',ncr7LualibDir)
