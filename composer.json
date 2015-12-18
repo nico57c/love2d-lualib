@@ -1,3 +1,14 @@
 {
-    "name": "Ncr7/love2d-lualib"
+ "name" : "Ncr7-love2d-lualib",
+ "description" : "Ncr7-love2d-lualib",
+ "minimum-stability" : "stable",
+ "authors" : [{
+ 		"name" : "Nicolas.C",
+ 		"role" : "Author",
+ 		"email" : "nico57c@users.noreply.github.com"
+ 	}
+ ],
+ "support" : {
+ 	"email" : "nico57c@users.noreply.github.com"
+ }
 }
